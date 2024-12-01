@@ -16,6 +16,7 @@ services:
       - ./db-data/catalog_db_server/:/var/lib/postgresql/data
   order_db_server:
     image: "postgres:14.0"
+    restart: always
     ports:
       - "5433:5432"
     deploy:
