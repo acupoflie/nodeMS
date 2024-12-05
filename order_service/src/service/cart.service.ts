@@ -7,7 +7,7 @@ export const CreateCart = async (
   repo: CartRepositoryType
 ) => {
   // make a call to our catalog microservice
-  // sync call
+  // sync call blank
 
   const product = await GetProductDetails(input.productId);
 
