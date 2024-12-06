@@ -1,5 +1,6 @@
 import { CartRequestInput } from "../dto/cartRequest.do";
 import { CartRepositoryType } from "../types/repository.type";
+import { logger } from "../utils";
 import { GetProductDetails } from "../utils/broker";
 
 export const CreateCart = async (
@@ -10,13 +11,13 @@ export const CreateCart = async (
   // sync call blank
 
   const product = await GetProductDetails(input.productId);
-
+  logger.info(product);
   if (product.stock < input.qty) {
     throw new Error("product is out of stock");
   }
 
-  const data = await repo.create(input);
-  return data;
+  // const data = await repo.create(input);
+  return product;
 };
 
 export const GetCart = async (input: any, repo: CartRepositoryType) => {

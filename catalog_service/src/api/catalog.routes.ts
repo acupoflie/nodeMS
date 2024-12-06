@@ -38,11 +38,11 @@ router.patch(
         req.body
       );
 
-      const id = parseInt(req.params.id) || 0
+      const id = parseInt(req.params.id) || 0;
 
       if (errors) return res.status(400).json(errors);
 
-      const data = await catalogService.updateProduct({id, ...input});
+      const data = await catalogService.updateProduct({ id, ...input });
       return res.status(200).json(data);
     } catch (error) {
       const err = error as Error;
@@ -54,10 +54,10 @@ router.patch(
 router.get(
   "/products",
   async (req: Request, res: Response, next: NextFunction) => {
-    const limit = Number(req.query["limit"]) // || 10
-    const offset = Number(req.query["offset"])
+    const limit = Number(req.query["limit"]); // || 10
+    const offset = Number(req.query["offset"]);
     try {
-      const data = await catalogService.getProducts(limit, offset)
+      const data = await catalogService.getProducts(limit, offset);
       return res.status(200).json(data);
     } catch (error) {
       const err = error as Error;
@@ -69,13 +69,14 @@ router.get(
 router.get(
   "/products/:id",
   async (req: Request, res: Response, next: NextFunction) => {
-    const id = parseInt(req.params.id) || 0
+    const id = parseInt(req.params.id) || 0;
     try {
-      const data = await catalogService.getProduct(id)
+      const data = await catalogService.getProduct(id);
       return res.status(200).json(data);
     } catch (error) {
-      const err = error as Error;
-      return res.status(500).json(err.message);
+      // const err = error as Error;
+      // return res.status(500).json(err.message);
+      return next(error);
     }
   }
 );
@@ -83,9 +84,9 @@ router.get(
 router.delete(
   "/products/:id",
   async (req: Request, res: Response, next: NextFunction) => {
-    const id = Number(req.params.id) || 0
+    const id = Number(req.params.id) || 0;
     try {
-      const data = await catalogService.deleteProduct(id)
+      const data = await catalogService.deleteProduct(id);
       return res.status(200).json(data);
     } catch (error) {
       const err = error as Error;
