@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 9002;
 
 export const StartServer = async () => {
   app.listen(PORT, () => {
-    logger.info("Listening to: ", PORT);
+    logger.info(`Listening to: ${PORT}`);
   });
 
   process.on("uncaughtException", async (err) => {
