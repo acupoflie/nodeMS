@@ -1,5 +1,5 @@
 import axios from "axios";
-import { APIError } from "../error";
+import { APIError, NotFoundError } from "../error";
 import { logger } from "../logger";
 import { Product } from "../../dto/product.dto";
 
@@ -14,7 +14,7 @@ export const GetProductDetails = async (productId: number) => {
     return response.data as Product;
   } catch (err) {
     logger.error(err);
-    throw new APIError("product not found");
+    throw new NotFoundError("product not found");
   }
 
   return {
