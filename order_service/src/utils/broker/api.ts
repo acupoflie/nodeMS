@@ -16,9 +16,4 @@ export const GetProductDetails = async (productId: number) => {
     logger.error(err);
     throw new NotFoundError("product not found");
   }
-
-  return {
-    stock: 10,
-    price: 100,
-  };
 };
