@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { MessageBroker } from "../utils";
-import { OrderEvent } from "../types";
+import { OrderEvent, OrderStatus } from "../types";
 import { RequestAuthorizer } from "./middleware";
 import * as service from "../service/order.service";
 import { OrderRepository } from "../repository/order.repository";
@@ -69,7 +69,7 @@ router.patch(
   async (req: Request, res: Response, next: NextFunction) => {
     // security check for microservice calls only
     const orderId = parseInt(req.params.id);
-    const status = req.body.status;
+    const status = req.body.status as OrderStatus;
 
     const response = await service.UpdateOrder(orderId, status, repo);
 

@@ -1,42 +1,99 @@
 import { OrderRepositoryType } from "../repository/order.repository";
-import { OrderWithLineItems } from "../dto/orderRequest.dto";
+import { OrderLineItemType, OrderWithLineItems } from "../dto/orderRequest.dto";
 import { CartRepositoryType } from "../repository/cart.repository";
+import { OrderStatus } from "../types";
 
 export const CreateOrder = async (
   userId: number,
   repo: OrderRepositoryType,
   cartRepo: CartRepositoryType
 ) => {
-  return {};
+  // find cart by user id
+  const cart = await cartRepo.findCart(userId);
+  if (!cart) {
+    throw new Error("Cart not found");
+  }
+
+  // calculate total price
+  let totalPrice = 0;
+  let orderLineItems: OrderLineItemType[] = [];
+
+  // create orderline items from cart
+  cart.lineItems.forEach((lineItem) => {
+    totalPrice += Number(lineItem.price) * Number(lineItem.qty);
+    orderLineItems.push({
+      productId: lineItem.productId,
+      itemName: lineItem.itemName,
+      qty: lineItem.qty,
+      price: lineItem.price,
+    } as OrderLineItemType);
+  });
+
+  const orderNumber = Math.floor(Math.random() * 1000000);
+
+  // create order with lineitems
+  const orderInput: OrderWithLineItems = {
+    orderNumber: orderNumber,
+    txnId: null,
+    customerId: userId,
+    amount: totalPrice.toString(),
+    orderItems: orderLineItems,
+    status: OrderStatus.PENDING,
+  };
+
+  const order = await repo.createOrder(orderInput);
+  await cartRepo.clearCartData(userId);
+  console.log("Order created successfully", order);
+
+  // fire a message to the subscription service [catalog service] to update the inventory
+  // await repo.publishOrderEvent(order, "ORDER_CREATED");
+
+  // return success response
+  return { message: "Order created successfully", orderNumber };
 };
 
 export const UpdateOrder = async (
   orderId: number,
-  status: string,
+  status: OrderStatus,
   repo: OrderRepositoryType
 ) => {
-  return {};
+  await repo.updateOrder(orderId, status);
+
+  // fire a message to the subscription service [catalog service] to update the inventory
+  //TODO handle kafka calls
+  if (status === OrderStatus.CANCELLED) {
+    // await repo.publishOrderEvent(orderId, "ORDER_CANCELLED");
+  }
+
+  return { message: "Order updated successfully" };
 };
 
 export const GetOrder = async (orderId: number, repo: OrderRepositoryType) => {
-  return {};
+  const order = await repo.findOrder(orderId);
+  if (!order) {
+    throw new Error("Order not found");
+  }
+  return order;
 };
 
 export const GetOrders = async (userId: number, repo: OrderRepositoryType) => {
-  return {};
+  const orders = await repo.findOrdersByCustomerId(userId);
+  if (Array.isArray(orders) && orders.length > 0) {
+    return orders;
+  }
+  throw new Error("Orders not found");
 };
 
 export const DeleteOrder = async (
   orderId: number,
   repo: OrderRepositoryType
 ) => {
-  return {};
+  await repo.deleteOrder(orderId);
+  return true;
 };
 
-export const HandleSubscription = async (
-  message: any
-) => {
-    // if (message.event === OrderEvent.CREATE_ORDER)
-    // call create order
+export const HandleSubscription = async (message: any) => {
+  // if (message.event === OrderEvent.CREATE_ORDER)
+  // call create order
   return {};
 };

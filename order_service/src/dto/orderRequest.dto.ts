@@ -5,7 +5,7 @@ export type OrderLineItemType = {
   productId: number;
   itemName: string;
   qty: number;
-  price: number;
+  price: string;
   orderId: number;
   createdAt: Date;
   updatedAt: Date;
@@ -13,12 +13,12 @@ export type OrderLineItemType = {
 
 export interface OrderWithLineItems {
   id?: number;
-  orderId: number;
+  orderNumber: number;
   customerId: number;
   txnId: string | null;
   amount: string;
   status: string;
   orderItems: OrderLineItemType[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
