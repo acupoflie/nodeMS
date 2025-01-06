@@ -1,7 +1,7 @@
 import { OrderRepositoryType } from "../repository/order.repository";
 import { OrderLineItemType, OrderWithLineItems } from "../dto/orderRequest.dto";
 import { CartRepositoryType } from "../repository/cart.repository";
-import { OrderStatus } from "../types";
+import { MessageType, OrderStatus } from "../types";
 
 export const CreateOrder = async (
   userId: number,
@@ -92,7 +92,8 @@ export const DeleteOrder = async (
   return true;
 };
 
-export const HandleSubscription = async (message: any) => {
+export const HandleSubscription = async (message: MessageType) => {
+  console.log("Message received by order consumer", message);
   // if (message.event === OrderEvent.CREATE_ORDER)
   // call create order
   return {};
