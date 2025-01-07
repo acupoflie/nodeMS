@@ -3,10 +3,13 @@ import { CatalogService } from "../services/catalog.service";
 import { CatalogRepository } from "../repository/catalog.repository";
 import { RequestValidator } from "../utils/requestValidator";
 import { CreateProductRequest, UpdateProductRequest } from "../dto/product.dto";
+import { BrokerService } from "../services/broker.service";
 
 const router = express.Router();
 
 export const catalogService = new CatalogService(new CatalogRepository());
+const brokerService = new BrokerService(catalogService);
+brokerService.initializeBroker();
 
 //endpoints
 router.post(
@@ -95,14 +98,17 @@ router.delete(
   }
 );
 
-router.post("/products/stock", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = await catalogService.getProductStock(req.body.productId);
-    return res.status(200).json(data);
-  } catch (error) {
-    const err = error as Error;
-    return res.status(500).json(err.message);
+router.post(
+  "/products/stock",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await catalogService.getProductStock(req.body.productId);
+      return res.status(200).json(data);
+    } catch (error) {
+      const err = error as Error;
+      return res.status(500).json(err.message);
+    }
   }
-});
+);
 
 export default router;

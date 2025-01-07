@@ -8,11 +8,11 @@ import { OrderEvent } from "../types";
 export const InitializeBroker = async () => {
   const producer = await MessageBroker.connectProducer<Producer>();
   producer.on("producer.connect", () => {
-    console.log("producer connected");
+    console.log("Order Service : producer connected");
   });
   const consumer = await MessageBroker.connectConsumer<Consumer>();
   consumer.on("consumer.connect", () => {
-    console.log("consumer connected");
+    console.log("Order Service : consumer connected");
   });
 
   // keep listening to consumer events
