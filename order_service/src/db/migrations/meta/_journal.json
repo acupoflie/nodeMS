@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1732703410419,
-      "tag": "0000_big_wolf_cub",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1734986693848,
-      "tag": "0001_public_gabe_jones",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1736104602147,
-      "tag": "0002_fat_justin_hammer",
+      "when": 1736332636477,
+      "tag": "0000_tidy_punisher",
       "breakpoints": true
     }
   ]

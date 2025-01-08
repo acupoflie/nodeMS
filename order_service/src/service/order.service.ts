@@ -43,9 +43,9 @@ export const CreateOrder = async (
   };
 
   //! TEMPORARY
-  // const order = await repo.createOrder(orderInput);
-  // await cartRepo.clearCartData(userId);
-  // console.log("Order created successfully", order);
+  const order = await repo.createOrder(orderInput);
+  await cartRepo.clearCartData(userId);
+  console.log("Order created successfully", order);
 
   // fire a message to the subscription service [catalog service] to update the inventory
   await SendCreateOrderMessage(orderInput);
