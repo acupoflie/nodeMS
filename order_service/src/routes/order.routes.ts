@@ -31,6 +31,7 @@ router.post(
 
 router.get(
   "/orders",
+  RequestAuthorizer,
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
     if (!user) {
@@ -82,6 +83,7 @@ router.patch(
 // only going to call from microservice
 router.delete(
   "/orders/:id",
+  RequestAuthorizer,
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
     if (!user) {
